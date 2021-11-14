@@ -1,11 +1,13 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:shop_app/layout/cubit/cubit.dart';
 import 'package:shop_app/layout/cubit/states.dart';
 import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/Home/Address/add%20address%20screen.dart';
 import 'package:shop_app/modules/Home/Address/cubit/cubit.dart';
+import 'package:shop_app/modules/Home/order/order_screen.dart';
 import 'package:shop_app/modules/Home/profile/Change%20Password/change_paswword.dart';
 import 'package:shop_app/modules/login/LoginScreen.dart';
 import 'package:shop_app/modules/onboarding/onoardingScreen.dart';
@@ -23,9 +25,7 @@ class MyDrawer extends StatelessWidget {
     LoginModel model;
     // TODO: implement build
 
-    return BlocProvider(
-      create: (context)=>AddressCubit()..getAddressData(),
-      child: BlocConsumer<HomeCubit,HomeStates>(
+    return BlocConsumer<HomeCubit,HomeStates>(
           listener: (context,state){
             if(state is ProfileSuccessState)
             {
@@ -92,15 +92,11 @@ class MyDrawer extends StatelessWidget {
                         color: Colors.lightBlue,
                         size: 25,
                       ),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder:(context) {
-                            widgett=0;
-                          return  Zoom_Drawer(token);
-                          },
-                        ));
+                      onTap: () {HomeCubit.get(context).ChangeIndex(0);
+                      ZoomDrawer.of(context).toggle();
                       },
                     ),
+
                     ListTile(
                       title: Text(
                         "My Orders",
@@ -116,7 +112,7 @@ class MyDrawer extends StatelessWidget {
                       ),
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>ChangePasswordScreen(),
+                          builder: (context)=>OrderScreen(),
                         ));
                       },
                     ),
@@ -167,7 +163,10 @@ class MyDrawer extends StatelessWidget {
                             context,
                             MaterialPageRoute(builder: (context) => OnboardingScreen()),
                                 (Route<dynamic> route) => false,
+
                           );
+
+
                         },
                         child: Text(
                           "On Boarding",
@@ -196,6 +195,16 @@ class MyDrawer extends StatelessWidget {
                                     (Route<dynamic> route) => false,
                               );
                               CacheHelper.removeData(key: "token");
+                              HomeCubit.get(context).ChangeIndex(0);
+                              Token=null;
+                              HomeCubit.get(context).cartIds.clear();
+                              HomeCubit.get(context).productsQuantity.clear();
+                              HomeCubit.get(context).productCartIds.clear();
+                              HomeCubit.get(context).favorites.clear();
+
+
+
+
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(right: 184),
@@ -265,8 +274,7 @@ class MyDrawer extends StatelessWidget {
             );
           },
 
-        ),
-    );
+        );
   }
 }
 

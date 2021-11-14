@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
           print(state);
           if (state is LoginSuccessState) {
             if (state.model.status) {
+              Token=state.model.data.token;
               print(state.model.message);
               print(state.model.data.id);
               showMessage(msg: state.model.message, color: Colors.blue);

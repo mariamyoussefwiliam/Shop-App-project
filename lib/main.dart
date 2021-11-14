@@ -3,7 +3,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/modules/Home/Address/cubit/cubit.dart';
 import 'package:shop_app/modules/login/LoginScreen.dart';
+import 'package:shop_app/modules/login/cubit/cubit.dart';
+import 'package:shop_app/modules/login/cubit/states.dart';
 import 'package:shop_app/shared/component/constants.dart';
 import 'package:shop_app/shared/component/zoomdrawer.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
@@ -18,6 +21,7 @@ void main() async {
   await CacheHelper.init();
   DioHelper.init();
   bool skip =false;
+
   if(CacheHelper.get(key: "skip")!=null)
   {
    skip= CacheHelper.get(key: "skip");
@@ -55,32 +59,42 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-      create: (context)=>HomeCubit()..GetHomeData()..UserProfile(token: Token)..GetCategoryData()..getCartData(),
+          create: (BuildContext context) => ShopLoginCubit(),
+        ),
+
+        BlocProvider(
+      create: (context)=>HomeCubit(),
         ),
 
       ],
-      child: MaterialApp(
-        builder: BotToastInit(),
-        debugShowCheckedModeBanner: false,
-        title: "Shop app",
-        home:StartWidget,
-        //!Skip? OnboardingScreen():LoginScreen(),
-        theme: ThemeData(
-          //  primarySwatch:  MaterialColor(0xff6cbae8,color),
+      child: BlocConsumer<ShopLoginCubit,ShopLoginStates>(
+        listener:(context,state){
 
-          appBarTheme: AppBarTheme(
+        },
+        builder: (context,state)=> MaterialApp(
+          builder: BotToastInit(),
+          debugShowCheckedModeBanner: false,
+          title: "Shop app",
+          home:StartWidget,
+          navigatorKey: navigatorKey,
+          //!Skip? OnboardingScreen():LoginScreen(),
+          theme: ThemeData(
+            //  primarySwatch:  MaterialColor(0xff6cbae8,color),
 
-            brightness: Brightness.light,
+            appBarTheme: AppBarTheme(
 
-            iconTheme: IconThemeData(
-              color: Colors.lightBlue,
+              brightness: Brightness.light,
+
+              iconTheme: IconThemeData(
+                color: Colors.lightBlue,
+              ),
+
+              color: Colors.white,
+              elevation: 0,
             ),
 
-            color: Colors.white,
-            elevation: 0,
+            scaffoldBackgroundColor: Colors.white,
           ),
-
-          scaffoldBackgroundColor: Colors.white,
         ),
       ),
     );

@@ -3,12 +3,15 @@ import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/layout/cubit/cubit.dart';
 import 'package:shop_app/layout/cubit/states.dart';
 import 'package:shop_app/modules/Home/Address/cubit/cubit.dart';
 import 'package:shop_app/modules/Home/Address/cubit/states.dart';
+import 'package:shop_app/modules/Home/home.dart';
 import 'package:shop_app/shared/component/component.dart';
 import 'package:shop_app/shared/component/constants.dart';
 import 'package:shop_app/shared/component/zoomdrawer.dart';
+import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 class AddAddressScreen extends StatefulWidget {
 
@@ -32,19 +35,23 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=>AddressCubit()..getAddressData(),
-      child: BlocConsumer<AddressCubit, AddressStates>(
+      create: (context)=>HomeCubit()..getAddressData(),
+      child: BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {
 
           if(state is AddAddressSuccessState)
             {
+
+
               Navigator.push(context, MaterialPageRoute(
                 builder: (context)=>AddAddressScreen(true)
               ));
               showMessage(msg: state.addAddressDataModel.message, color: Colors.blue);
+              Navigator.pop(context);
             }
           if(state is UpdateAddressSuccessState)
           {
+
             showMessage(msg: state.addAddressDataModel.message, color: Colors.blue);
 
           }
@@ -55,6 +62,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           if(state is DeleteAddressLoadingState)
           {
             showMessage(msg: "Deleted Successfully", color: Colors.red);
+
           }
 
 
@@ -63,9 +71,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
 
           return ConditionalBuilder(
-            condition: Token != null&&AddressCubit.get(context).getAddressModel!=null,
+            condition: Token != null&&HomeCubit.get(context).getAddressModel!=null,
             builder: (context) => ConditionalBuilder(
-              condition: AddressCubit.get(context).addressId==0,
+              condition: HomeCubit.get(context).addressId==0,
               builder: (context){
 
                 List<Column> padges=[
@@ -423,7 +431,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   child: RaisedButton(
                     onPressed: () {
                       if (formKey.currentState.validate()) {
-                        AddressCubit.get(context).addUserAddress(name: currentpasswordcontroller.text, city: newpasswordcontroller.text, region: confirmcontroller.text, details: streetcontroller.text);
+                        CacheHelper.put(key: "Address", value: true);
+                        HomeCubit.get(context).addUserAddress(name: currentpasswordcontroller.text, city: newpasswordcontroller.text, region: confirmcontroller.text, details: streetcontroller.text);
 
 
                       }
@@ -454,10 +463,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   Widget delete(state,context)
   {
-    deletecurrentpasswordcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].name;
-    deletenewpasswordcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].city;
-    deleteconfirmcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].region;
-    deletestreetcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].details;
+    deletecurrentpasswordcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].name;
+    deletenewpasswordcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].city;
+    deleteconfirmcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].region;
+    deletestreetcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].details;
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -570,9 +579,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                             // showCloseIcon: true,
                             btnCancelOnPress: () {},
                             btnOkOnPress: () {
-                              AddressCubit.get(context).deleteUserAddress(AddressCubit.get(context).addressId);
+                              CacheHelper.removeData(key: "Address");
+                              HomeCubit.get(context).deleteUserAddress(HomeCubit.get(context).addressId);
                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                                builder: (context)=>AddAddressScreen(true)),
+                                builder: (context)=>Zoom_Drawer(Token)),
                                     (Route<dynamic> route) => false,
                               );
                             },
@@ -615,10 +625,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
     if(xx)
     {
-      currentpasswordcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].name;
-      newpasswordcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].city;
-      confirmcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].region;
-      streetcontroller.text=AddressCubit.get(context).getAddressModel.data.data[0].details;
+      currentpasswordcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].name;
+      newpasswordcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].city;
+      confirmcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].region;
+      streetcontroller.text=HomeCubit.get(context).getAddressModel.data.data[0].details;
       xx=false;
       print("xxxxxxxxxxxxxxxxxx");
 
@@ -723,7 +733,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     child: RaisedButton(
                       onPressed: () {
                         if (formKey.currentState.validate()) {
-                          AddressCubit.get(context).changeUserAddress(name: currentpasswordcontroller.text, city: newpasswordcontroller.text, region: confirmcontroller.text, details: streetcontroller.text);
+                          HomeCubit.get(context).changeUserAddress(name: currentpasswordcontroller.text, city: newpasswordcontroller.text, region: confirmcontroller.text, details: streetcontroller.text);
 
                         }
                       },

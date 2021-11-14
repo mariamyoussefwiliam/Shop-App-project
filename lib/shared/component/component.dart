@@ -589,7 +589,30 @@ productId==null?HomeCubit.get(context).changeCartItem(model.id):HomeCubit.get(co
                                  color: Colors.redAccent,
                                ),
                                onPressed: () {
-                                HomeCubit.get(context).changeCartItem(model.id);
+                                 AwesomeDialog(
+                                   context:  navigatorKey.currentContext,
+                                   dialogType: DialogType.WARNING,
+                                   width: 340,
+                                   buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
+                                   headerAnimationLoop: false,
+                                   animType: AnimType.BOTTOMSLIDE,
+                                   title: 'Question',
+                                   desc: 'Are you Sure Delete ${model.name.split(" ")[0]} ${model.name.split(" ")[1]} From Your Cart  ...',
+                                   // showCloseIcon: true,
+                                   btnCancelOnPress: () {
+
+
+                                   },
+                                   btnOkOnPress: () {
+
+
+                                         HomeCubit.get(context).changeCartItem(model.id);
+
+
+
+                                   },
+                                 )..show();
+
 
                                },
                              ),

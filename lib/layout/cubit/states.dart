@@ -1,3 +1,5 @@
+import 'package:shop_app/models/address/address_model.dart';
+import 'package:shop_app/models/address/get%20address%20model.dart';
 import 'package:shop_app/models/cart/add%20cart.dart';
 import 'package:shop_app/models/cart/getcarts.dart';
 import 'package:shop_app/models/cart/updatecart.dart';
@@ -5,6 +7,10 @@ import 'package:shop_app/models/favorite/favorite_model.dart';
 import 'package:shop_app/models/favorite/get_favorite_data_model.dart';
 import 'package:shop_app/models/home_model.dart';
 import 'package:shop_app/models/login_model.dart';
+import 'package:shop_app/models/order/add%20order.dart';
+import 'package:shop_app/models/order/cancle%20order.dart';
+import 'package:shop_app/models/order/get%20order.dart';
+import 'package:shop_app/models/order/order%20details.dart';
 
 abstract class HomeStates {}
 
@@ -143,3 +149,121 @@ class ShopErrorChangeCartItemState extends HomeStates {
 
   ShopErrorChangeCartItemState(this.error);
 }
+
+
+
+class AddOrderLoadingState extends HomeStates {}
+
+class AddOrderSuccessState extends HomeStates {
+  final AddOrderModel addOrderModel;
+
+  AddOrderSuccessState(this.addOrderModel);
+}
+
+class AddOrderErrorState extends HomeStates {
+  final String error;
+
+  AddOrderErrorState(this.error);
+}
+
+class CancelOrderLoadingState extends HomeStates {}
+
+class CancelOrderSuccessState extends HomeStates {
+  final CancelOrderModel cancelOrderModel;
+
+  CancelOrderSuccessState(this.cancelOrderModel);
+}
+
+class CancelOrderErrorState extends HomeStates {
+  final String error;
+
+  CancelOrderErrorState(this.error);
+}
+
+class GetOrdersLoadingState extends HomeStates {}
+
+class GetOrdersSuccessState extends HomeStates {
+  final GetOrderModel getOrderModel;
+
+  GetOrdersSuccessState(this.getOrderModel);
+}
+
+class GetOrdersErrorState extends HomeStates {
+  final String error;
+
+  GetOrdersErrorState(this.error);
+}
+
+class OrderDetailsLoadingState extends HomeStates {}
+
+class OrderDetailsSuccessState extends HomeStates {
+  final OrderDetailsModel orderDetailsModel;
+
+  OrderDetailsSuccessState(this.orderDetailsModel);
+}
+
+class OrderDetailsErrorState extends HomeStates {
+  final String error;
+
+  OrderDetailsErrorState(this.error);
+}
+
+
+
+class AddressInitialState extends HomeStates {}
+
+
+class GetAddressLoadingState extends HomeStates {}
+
+class GetAddressSuccessState extends HomeStates {
+  GetAddressDataModel getAddressDataModel;
+  GetAddressSuccessState(this.getAddressDataModel);
+}
+
+class GetAddressErrorState extends HomeStates {
+  final String error;
+
+  GetAddressErrorState(this.error);
+}
+
+
+class AddAddressLoadingState extends HomeStates {}
+
+class AddAddressSuccessState extends HomeStates {
+  AddressModel addAddressDataModel;
+  AddAddressSuccessState(this.addAddressDataModel);
+}
+
+class AddAddressErrorState extends HomeStates {
+  final String error;
+
+  AddAddressErrorState(this.error);
+}
+
+
+class UpdateAddressLoadingState extends HomeStates {}
+
+class UpdateAddressSuccessState extends HomeStates {
+  AddressModel addAddressDataModel;
+  UpdateAddressSuccessState(this.addAddressDataModel);
+}
+
+class UpdateAddressErrorState extends HomeStates {
+  final String error;
+
+  UpdateAddressErrorState(this.error);
+}
+class DeleteAddressLoadingState extends HomeStates {}
+
+class DeleteAddressSuccessState extends HomeStates {
+  AddressModel deleteAddressDataModel;
+  DeleteAddressSuccessState(this.deleteAddressDataModel);
+}
+
+class DeleteAddressErrorState extends HomeStates {
+  final String error;
+
+  DeleteAddressErrorState(this.error);
+}
+
+

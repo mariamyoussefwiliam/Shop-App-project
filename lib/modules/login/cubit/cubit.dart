@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/login/cubit/states.dart';
+import 'package:shop_app/shared/component/constants.dart';
 import 'package:shop_app/shared/network/end_point.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 
@@ -26,6 +27,7 @@ class ShopLoginCubit extends Cubit<ShopLoginStates> {
    model = LoginModel.fromJson(value.data);
      // print(model);
       print(model.status);
+
         // print(value.data['message']);
       //   print(value.data['data']['id']);
      emit( LoginSuccessState(model));

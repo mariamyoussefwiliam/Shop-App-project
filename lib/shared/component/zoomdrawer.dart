@@ -5,6 +5,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:shop_app/layout/cubit/cubit.dart';
 import 'package:shop_app/layout/cubit/states.dart';
 import 'package:shop_app/layout/homeLayout.dart';
+import 'package:shop_app/modules/login/cubit/states.dart';
 import 'package:shop_app/shared/component/mydrawer.dart';
 
 import 'constants.dart';
@@ -20,23 +21,28 @@ class Zoom_Drawer extends StatelessWidget
   @override
   Widget build(BuildContext context) {
 
-    Token=token;
 
-    return  BlocConsumer<HomeCubit,HomeStates>(
+  return   BlocProvider.value(
+        value: BlocProvider.of<HomeCubit>(context)
+    ..GetHomeData()..UserProfile(token: Token)..GetCategoryData()..getOrders()..getCartData()..getAddressData(),
+     child:BlocConsumer<HomeCubit,HomeStates>(
           listener: (context,state){
 
             if(state is ChangeFavoriteIconSuccessState)
               {
-                HomeCubit.get(context).GetHomeData();
+                HomeCubit.get(context).GetHomeData(token:Token);
               }
             if(state is ShopSuccessChangeCartItemState)
             {
-              HomeCubit.get(context).GetHomeData();
+              HomeCubit.get(context).GetHomeData(token: Token);
             }
             if(state is UpdateCartSuccessState)
             {
-              HomeCubit.get(context).GetHomeData();
+              HomeCubit.get(context).GetHomeData(token: Token);
             }
+
+
+
 
           },
       builder: (context,state){
@@ -51,12 +57,13 @@ class Zoom_Drawer extends StatelessWidget
         //slideWidth: MediaQuery.of(context).size.width*0.66,
         showShadow: true,
         backgroundColor: Colors.lightBlue,
-        mainScreen: HomeLayout(Token),
-        menuScreen: MyDrawer(Token),
+        mainScreen: HomeLayout(token),
+        menuScreen: MyDrawer(token),
       );
 
   }
 
-    );
+    )
+  );
 }
 }

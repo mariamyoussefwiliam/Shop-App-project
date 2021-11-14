@@ -35,3 +35,5 @@ int widgett=0;
 Color defaultcolor=Color(0xff6CB9E7);
 
 bool xx=true;
+
+final navigatorKey = GlobalKey<NavigatorState>();

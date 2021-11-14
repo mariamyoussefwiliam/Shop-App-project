@@ -33,7 +33,8 @@ class HomeScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: homeModel != null &&
               category_model != null &&
-              HomeCubit.get(context).getFavoritesModel != null
+              HomeCubit.get(context).getFavoritesModel != null&&HomeCubit.get(context).favorites.isNotEmpty
+
           ,
           builder: (context) {
 

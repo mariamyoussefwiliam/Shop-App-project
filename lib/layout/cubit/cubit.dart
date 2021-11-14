@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/cubit/states.dart';
+import 'package:shop_app/models/address/address_model.dart';
+import 'package:shop_app/models/address/get%20address%20model.dart';
 import 'package:shop_app/models/cart/add%20cart.dart';
 import 'package:shop_app/models/cart/getcarts.dart';
 import 'package:shop_app/models/cart/updatecart.dart';
@@ -11,6 +13,10 @@ import 'package:shop_app/models/favorite/favorite_model.dart';
 import 'package:shop_app/models/favorite/get_favorite_data_model.dart';
 import 'package:shop_app/models/home_model.dart';
 import 'package:shop_app/models/login_model.dart';
+import 'package:shop_app/models/order/add%20order.dart';
+import 'package:shop_app/models/order/cancle%20order.dart';
+import 'package:shop_app/models/order/get%20order.dart';
+import 'package:shop_app/models/order/order%20details.dart';
 import 'package:shop_app/models/products/category_model.dart';
 import 'package:shop_app/shared/component/component.dart';
 import 'package:shop_app/shared/component/constants.dart';
@@ -28,6 +34,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(ProfileLoadingState());
     DioHelper.getData(url: Profile, token: token).then((value) {
       model = LoginModel.fromJson(value.data);
+
       emit(ProfileSuccessState(model));
     }).catchError((onError) {
       emit(ProfileErrorState(onError.toString()));
@@ -69,6 +76,7 @@ class HomeCubit extends Cubit<HomeStates> {
       }); }
       getFavoriteData();
 
+
       print(Token);
       emit(GetHomeDataSuccessState(home_model));
     }).catchError((error) {
@@ -109,12 +117,14 @@ class HomeCubit extends Cubit<HomeStates> {
   GetFavoritesModel getFavoritesModel;
 
   void getFavoriteData() {
+
     emit(GetFavoriteDataLoadingState());
     DioHelper.getData(url: Favorite, token: Token).then((value) {
       getFavoritesModel = GetFavoritesModel.fromJson(value.data);
       //  print(value.data);
       getFavoritesModel.data.data.forEach((element) {
         favorites.addAll({element.product.id: true});
+     //   favorites[element.product.id]= true;
       });
 
 
@@ -262,6 +272,196 @@ class HomeCubit extends Cubit<HomeStates> {
       print(error);
     });
   }
+
+
+
+  GetAddressDataModel getAddressModel;
+  int addressId;
+  void getAddressData() {
+    emit(GetAddressLoadingState());
+
+    DioHelper.getData(url:Address, token: Token).then((value) {
+      getAddressModel = GetAddressDataModel.fromJson(value.data);
+
+      emit(GetAddressSuccessState(getAddressModel));
+      // print(getAddressModel.data.data .toString());
+
+      if(getAddressModel.data.data.isNotEmpty)
+      {
+        addressId=getAddressModel.data.data[0].id;
+      }
+      else{
+        addressId=0;
+      }
+
+    }).catchError((error) {
+      emit(GetAddressErrorState(error.toString()));
+      print(error.toString());
+    });
+  }
+
+
+  AddressModel addAddressModel;
+  void addUserAddress(
+      {@required  name, @required city, @required region, @required details}) {
+
+    emit(AddAddressLoadingState());
+    DioHelper.postData(
+        url: Address,
+        data: {
+          'name': name,
+          'city': city,
+          'region': region,
+          'details': details,
+          "latitude": 30.0616863,
+          "longitude": 31.3260088
+        },
+        token: Token)
+        .then((value) {
+      addAddressModel = AddressModel.fromJson(value.data);
+      getAddressData();
+      emit(AddAddressSuccessState(addAddressModel));
+    }).catchError((error) {
+      print('${error.toString()}');
+      emit(AddAddressErrorState(error));
+    });
+  }
+
+
+
+  bool isNewAddress = false;
+  AddressModel updateAddressModel;
+  void changeUserAddress(
+      {@required name, @required city, @required region, @required details}) {
+
+    emit(UpdateAddressLoadingState());
+    DioHelper.putData(
+        url: "$Address/$addressId",
+        data: {
+          'name': name,
+          'city': city,
+          'region': region,
+          'details': details,
+          "latitude": 30.0616863,
+          "longitude": 31.3260088
+        },
+        token: Token)
+        .then((value) {
+      updateAddressModel = AddressModel.fromJson(value.data);
+      getAddressData();
+      emit(UpdateAddressSuccessState(updateAddressModel));
+    }).catchError((error) {
+      print("Change User Address Error : ${error.toString()}");
+      emit(UpdateAddressErrorState(error));
+    });
+  }
+
+
+  AddressModel deleteAddressModel;
+  void deleteUserAddress(int addressId) {
+    emit(DeleteAddressLoadingState());
+    DioHelper.deleteData(url: "$Address/$addressId", token: Token)
+        .then((value) {
+      addressId=0;
+      deleteAddressModel = AddressModel.fromJson(value.data);
+
+      emit(DeleteAddressSuccessState(deleteAddressModel));
+
+    }).catchError((error) {
+      //  print("Change User Address Error : ${error.toString()}");
+      emit(DeleteAddressErrorState(error));
+    });
+  }
+
+
+
+
+  GetOrderModel orderModel;
+  void getOrders() {
+    emit(GetOrdersLoadingState());
+    DioHelper.getData(url: Orders, token: Token).then((value) {
+      orderModel = GetOrderModel.fromJson(value.data);
+      ordersDetails.clear();
+      ordersIds.clear();
+      orderModel.data.data.forEach((element) {
+        ordersIds.add(element.id);
+      });
+      emit(GetOrdersSuccessState(orderModel));
+      getOrdersDetails();
+    }).catchError((error) {
+      emit(GetOrdersErrorState(error));
+      print('Get Orders Error ${error.toString()}');
+    });
+  }
+
+  List<int> ordersIds = [];
+  OrderDetailsModel orderItemDetails;
+  List<OrderDetailsModel> ordersDetails = [];
+
+  void getOrdersDetails() async {
+    emit(OrderDetailsLoadingState());
+    if (ordersIds.isNotEmpty) {
+      for (var id in ordersIds) {
+        await DioHelper.getData(url: "$Orders/$id", token: Token)
+            .then((value) {
+          orderItemDetails = OrderDetailsModel.fromJson(value.data);
+          ordersDetails.add(orderItemDetails);
+          emit(OrderDetailsSuccessState(orderItemDetails));
+        }).catchError((error) {
+          emit(OrderDetailsErrorState(error));
+          print('Get Orders Details Error ${error.toString()}');
+          return;
+        });
+      }
+    }
+  }
+
+  AddOrderModel addOrderModel;
+  void addNewOrder() {
+    emit(AddOrderLoadingState());
+    DioHelper.postData(
+        url: Orders,
+        data: {
+          'address_id': addressId,
+          "payment_method": 1,
+          "use_points": false,
+        },
+        token: Token)
+        .then((value) {
+
+      addOrderModel = AddOrderModel.fromJson(value.data);
+      if (addOrderModel.status) {
+        getCartData();
+        productsQuantity.clear();
+        cartIds.clear();
+        productCartIds.clear();
+        getOrders();
+        emit(AddOrderSuccessState(addOrderModel));
+      } else {
+       // getCartData();
+        //getOrders();
+      }
+    }).catchError((error) {
+      print('${error.toString()}');
+      emit(AddOrderErrorState(error));
+    });
+  }
+
+  CancelOrderModel cancelOrderModel;
+  void cancelOrder({@required int id}) {
+    emit(CancelOrderLoadingState());
+    DioHelper.getData(url: "$Orders/$id/cancel", token: Token).then((value) {
+      cancelOrderModel = CancelOrderModel.fromJson(value.data);
+      getOrders();
+      emit(CancelOrderSuccessState(cancelOrderModel));
+    }).catchError((error) {
+      print('${error.toString()}');
+      emit(CancelOrderErrorState(error));
+    });
+  }
+
+
+
 
 
 }
