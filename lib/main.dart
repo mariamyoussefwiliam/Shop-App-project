@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +44,18 @@ void main() async {
     startWidget=OnboardingScreen();
   }
   print(skip);
+
+  HttpOverrides.global= MyHttpOverrides();
   runApp(MyApp(skip , startWidget,));
 }
 
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 class MyApp extends StatelessWidget {
 
    final bool Skip;

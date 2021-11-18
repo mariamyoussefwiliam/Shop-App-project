@@ -8,12 +8,20 @@ import 'package:shop_app/models/order/order%20details.dart';
 import 'package:shop_app/shared/component/component.dart';
 import 'package:shop_app/shared/component/constants.dart';
 import 'package:shop_app/shared/component/zoomdrawer.dart';
+import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 class OrderScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
+   bool getaddress= CacheHelper.get(key: "Address");
     return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
+        if(getaddress==true)
+          {
+            HomeCubit.get(context).getAddressData();
+            getaddress=false;
+          }
+
         if (state is CancelOrderSuccessState) {
           if (state.cancelOrderModel.status) {
 

@@ -35,7 +35,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
           if (state is ChangePasswordSuccessState) {
             showMessage(msg: state.ChangePassword.message, color: Colors.blue);
-          } else {
+          } else if (state is ChangePasswordErrorState) {
             showMessage(msg: "Your Current Password Failed", color: Colors.red);
           }
         },

@@ -10,3 +10,4 @@ const String Favorite="favorites";
 const String Address="addresses";
 const String Carts="carts";
 const String Orders="orders";
+const String Search="products/search";

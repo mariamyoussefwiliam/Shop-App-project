@@ -445,8 +445,8 @@ productId==null?HomeCubit.get(context).changeCartItem(model.id):HomeCubit.get(co
           await    Navigator.push(context, MaterialPageRoute(
                   builder: (context)=>ProductDetails(model.id)
               )).then((value) {
-           HomeCubit.get(context).GetHomeData();
-           HomeCubit.get(context).getCartData();
+        //   HomeCubit.get(context).GetHomeData();
+          // HomeCubit.get(context).getCartData();
           });
             },
             child: Material(
@@ -644,8 +644,6 @@ productId==null?HomeCubit.get(context).changeCartItem(model.id):HomeCubit.get(co
       },
 
     );
-
-
 
 
   }

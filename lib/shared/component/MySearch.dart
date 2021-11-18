@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_app/layout/cubit/cubit.dart';
 
 class MySearch extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class MySearch extends StatefulWidget {
 
 class _MySearchState extends State<MySearch> {
   bool Width = false;
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +28,21 @@ class _MySearchState extends State<MySearch> {
             child: Container(
               padding: EdgeInsets.only(left: 16),
               child: !Width
-                  ? TextField(
-                      decoration: InputDecoration(
-                          hintText: "Search",
-                          hintStyle: TextStyle(color: Colors.blue[300]),
-                          border: InputBorder.none),
-                    )
+                  ? Form(
+                key: formKey,
+                    child: TextFormField(
+
+                        decoration: InputDecoration(
+                            hintText: "Search",
+                            hintStyle: TextStyle(color: Colors.blue[300]),
+                            border: InputBorder.none),
+                      onChanged:  (value) {
+                        HomeCubit.get(context).search(searchKey: value);
+                      },
+
+                      ),
+
+                  )
                   : null,
             ),
           ),
@@ -43,12 +54,16 @@ class _MySearchState extends State<MySearch> {
 
                 child: Padding(
                   padding: const EdgeInsets.all(11.0),
-                  child: Icon(Width ? Icons.search : Icons.close,color: Colors.white,),
+                  child: Icon(Width ? Icons.search : Icons.close,color: Colors.white,)
+
+                  ,
                 ),
                 onTap: () {
                   setState(() {
                     Width = !Width;
+
                   });
+
                 },
               ),
             ),
@@ -62,4 +77,6 @@ class _MySearchState extends State<MySearch> {
       ),
     );
   }
+
+
 }

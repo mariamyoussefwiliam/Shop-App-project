@@ -127,7 +127,9 @@ class _HomeLayoutState extends State<HomeLayout> {
           child: Icon(Icons.search),
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SearchScreen(widget.token)));
+                MaterialPageRoute(builder: (context) => SearchScreen(widget.token))).then((value) {
+              HomeCubit.get(context).clearSearchData();
+            });
           },
           //params
         ),

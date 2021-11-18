@@ -124,10 +124,10 @@ class CartScreen extends StatelessWidget {
                                     },
                                     btnOkOnPress: () {
                                       HomeCubit.get(context).addNewOrder();
-                                      Navigator.push(context, MaterialPageRoute(
+                                      /*Navigator.push(context, MaterialPageRoute(
                                         builder: (context)=>OrderScreen(),
                                       ));
-
+*/
 
                                     },
                                   )..show();

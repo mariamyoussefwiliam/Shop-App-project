@@ -18,6 +18,7 @@ import 'package:shop_app/models/order/cancle%20order.dart';
 import 'package:shop_app/models/order/get%20order.dart';
 import 'package:shop_app/models/order/order%20details.dart';
 import 'package:shop_app/models/products/category_model.dart';
+import 'package:shop_app/models/search_model.dart';
 import 'package:shop_app/shared/component/component.dart';
 import 'package:shop_app/shared/component/constants.dart';
 import 'package:shop_app/shared/network/end_point.dart';
@@ -75,6 +76,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
       }); }
       getFavoriteData();
+      getCartData();
 
 
       print(Token);
@@ -191,7 +193,7 @@ class HomeCubit extends Cubit<HomeStates> {
       print(cartIds.toString());
     }).catchError((error) {
       print(error.toString());
-      emit(GetCartErrorState(error));
+      emit(GetCartErrorState(error.toString()));
     });
   }
 
@@ -389,7 +391,7 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(GetOrdersSuccessState(orderModel));
       getOrdersDetails();
     }).catchError((error) {
-      emit(GetOrdersErrorState(error));
+      emit(GetOrdersErrorState(error.toString()));
       print('Get Orders Error ${error.toString()}');
     });
   }
@@ -460,7 +462,26 @@ class HomeCubit extends Cubit<HomeStates> {
     });
   }
 
+  SearchModel searchModel;
+  var controller = TextEditingController();
 
+  void search({@required String searchKey}) {
+    emit(SearchLoadingState());
+    DioHelper.postData(url:Search, data: {
+      "text": searchKey,
+    }).then((value) {
+      searchModel = SearchModel.fromJson(value.data);
+      emit(SearchSuccessState());
+    }).catchError((error) {
+      print("Search Error : ${error.toString()}");
+      emit(SearchErrorState(error.toString()));
+    });
+  }
+
+  void clearSearchData() {
+    controller.clear();
+    searchModel = null;
+  }
 
 
 
