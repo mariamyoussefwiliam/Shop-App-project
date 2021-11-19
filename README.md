@@ -2,6 +2,10 @@
 
 This is a full ecommerce application . I made by using REST APIS (Dio package) ,shared preference and state management (block) . this app connects to the APIS to show you the all products in the store based on the category like (sports-electronics-best selling) . also you add your product to your favourites list to buy later
 
+
+https://user-images.githubusercontent.com/61950354/142589444-10158316-4a01-412d-8e0e-a86663f1489a.mp4
+
+
 ![258564588_1525202344508448_3547509995722757879_n](https://user-images.githubusercontent.com/61950354/142583823-7ed66d18-7717-42d1-818c-f5bacc6614f4.jpg)
 ![258884666_867072640666015_6665999891942143290_n](https://user-images.githubusercontent.com/61950354/142583825-be9cd576-7c8c-4a28-9b4c-39c6b683cd62.jpg)
 ![258854567_639623830735888_4565895955584932952_n](https://user-images.githubusercontent.com/61950354/142583830-db268341-4cff-4b04-87fa-14eaff2d59a9.jpg)
