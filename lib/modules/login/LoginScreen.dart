@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
-                            fallback: (contxt) =>
+                            fallback: (context) =>
                                 Center(child: CircularProgressIndicator()),
                           ),
                           SizedBox(

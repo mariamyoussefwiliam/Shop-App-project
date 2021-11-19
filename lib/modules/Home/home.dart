@@ -165,8 +165,7 @@ class HomeScreen extends StatelessWidget {
                     model.data.data[index].name,
                     model.data.data[index].image,
                     index))).then((value) {
-         HomeCubit.get(context).GetHomeData();
-        HomeCubit.get(context).getCartData();
+
         });
       },
       child: Container(

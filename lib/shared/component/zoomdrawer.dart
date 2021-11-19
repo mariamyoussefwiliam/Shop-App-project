@@ -24,7 +24,7 @@ class Zoom_Drawer extends StatelessWidget
 
   return   BlocProvider.value(
         value: BlocProvider.of<HomeCubit>(context)
-    ..GetHomeData()..UserProfile(token: Token)..GetCategoryData()..getOrders()..getCartData()..getAddressData(),
+    ..GetHomeData()..UserProfile(token: Token)..GetCategoryData()..getOrders()..getAddressData(),
      child:BlocConsumer<HomeCubit,HomeStates>(
           listener: (context,state){
 

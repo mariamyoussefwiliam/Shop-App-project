@@ -119,8 +119,9 @@ class OrderScreen extends StatelessWidget{
                     Text(
                       "Order ID:",
                       style: TextStyle(
+
                         color: Colors.black87,
-                        fontWeight: FontWeight.bold,
+
                         fontSize: 18,
 
                       ),
@@ -131,10 +132,13 @@ class OrderScreen extends StatelessWidget{
                     Text(
                       model.id.toString(),
                       style: TextStyle(
-                        color: defaultcolor,
-                        fontWeight: FontWeight.bold,
                         fontSize: 18,
-                          fontFamily: "FONT1"
+
+
+
+
+                        color: defaultcolor.withOpacity(0.9),
+
                       ),
                     ),
                   ],
@@ -143,7 +147,7 @@ class OrderScreen extends StatelessWidget{
                   model.date,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: defaultcolor.withOpacity(0.6),
+                    color: Colors.grey.withOpacity(0.7),
                     fontSize: 14,
                   ),
                 ),
@@ -153,55 +157,48 @@ class OrderScreen extends StatelessWidget{
               height: 6,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      "Cost:  ",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                          fontFamily: "FONT1",
+                Text(
+                  "Cost:  ",
+                  style: TextStyle(
+                    color: Colors.black87,
 
-                      ),
-                    ),
-                    Text(
-                      (model.cost).toString().substring(0, 5)+  "LE",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
+                    fontSize: 18,
 
-                        fontFamily: "FONT1",
-                        color: defaultcolor.withOpacity(0.9),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "VAT:  ",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                        fontFamily: "FONT1",
-                      ),
-                    ),
-                    Text(
-                      (model.vat).toString().substring(0, 6)+" LE",
-                      style: TextStyle(
-                        fontSize: 18,
-                          fontWeight: FontWeight.w900,
+                Text(
+                  (model.cost).toString().substring(0, 5)+  "LE",
+                  style: TextStyle(
+                    fontSize: 16,
 
-                          fontFamily: "FONT1",
+                    color: defaultcolor.withOpacity(0.9),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                Text(
+                  "VAT:  ",
+                  style: TextStyle(
+                    color: Colors.black87,
 
-                       color: defaultcolor
-                      ),
-                    ),
-                  ],
+                    fontSize: 18,
+
+                  ),
+                ),
+                Text(
+                  (model.vat).toString().substring(0, 6)+" LE",
+                  style: TextStyle(
+                    fontSize: 16,
+
+
+                   color: defaultcolor
+                  ),
                 ),
               ],
             ),
@@ -216,7 +213,7 @@ class OrderScreen extends StatelessWidget{
                     color: Colors.black,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
-                    fontFamily: "FONT1",
+
                   ),
                 ),
                 Text(
@@ -251,6 +248,7 @@ class OrderScreen extends StatelessWidget{
                 ),
                 if (model.status == "New")
                   defaultButton(
+                    background: Colors.redAccent,
 
                     text: "Cancel ",
                     function: () {

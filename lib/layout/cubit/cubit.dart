@@ -410,7 +410,7 @@ class HomeCubit extends Cubit<HomeStates> {
           ordersDetails.add(orderItemDetails);
           emit(OrderDetailsSuccessState(orderItemDetails));
         }).catchError((error) {
-          emit(OrderDetailsErrorState(error));
+          emit(OrderDetailsErrorState(error.toString()));
           print('Get Orders Details Error ${error.toString()}');
           return;
         });
@@ -430,6 +430,7 @@ class HomeCubit extends Cubit<HomeStates> {
         },
         token: Token)
         .then((value) {
+
 
       addOrderModel = AddOrderModel.fromJson(value.data);
       if (addOrderModel.status) {

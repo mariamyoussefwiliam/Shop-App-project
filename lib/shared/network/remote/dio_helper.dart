@@ -7,8 +7,8 @@ class DioHelper {
   static init() {
     dio = Dio(BaseOptions(
       baseUrl: "https://student.valuxapps.com/api/",
-        connectTimeout: 5000,
-        receiveTimeout: 3000,
+       /* connectTimeout: 5000,
+        receiveTimeout: 3000,*/
       receiveDataWhenStatusError: true,
       headers: {
         'Content-Type':'application/json',

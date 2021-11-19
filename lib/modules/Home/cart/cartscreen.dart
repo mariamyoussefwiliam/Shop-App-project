@@ -15,7 +15,10 @@ import 'package:shop_app/shared/network/local/cache_helper.dart';
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeStates>(
+    return BlocProvider.value(
+        value: BlocProvider.of<HomeCubit>(context)
+      ..getAddressData(),
+    child:BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
         if (state is AddOrderSuccessState) {
           if (state.addOrderModel.status) {
@@ -123,6 +126,7 @@ class CartScreen extends StatelessWidget {
                                     btnCancelOnPress: () {
                                     },
                                     btnOkOnPress: () {
+                                      HomeCubit.get(context).getAddressData();
                                       HomeCubit.get(context).addNewOrder();
                                       /*Navigator.push(context, MaterialPageRoute(
                                         builder: (context)=>OrderScreen(),
@@ -178,6 +182,6 @@ class CartScreen extends StatelessWidget {
               fallback: (context) => MyLoading(),
             )),
       ),
-    );
+    ));
   }
 }

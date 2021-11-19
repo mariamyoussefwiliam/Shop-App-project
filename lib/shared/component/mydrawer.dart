@@ -97,6 +97,7 @@ class MyDrawer extends StatelessWidget {
                       },
                     ),
 
+
                     ListTile(
                       title: Text(
                         "My Orders",
@@ -189,6 +190,7 @@ class MyDrawer extends StatelessWidget {
                       ListTile(
                         title: InkWell(
                             onTap: () {
+                              HomeCubit.get(context).ChangeIndex(0);
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(builder: (context) => LoginScreen()),

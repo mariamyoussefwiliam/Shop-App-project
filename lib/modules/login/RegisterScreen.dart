@@ -1,3 +1,4 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -182,32 +183,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   SizedBox(
                                     height: 35,
                                   ),
-                                  Row(
-                                    children: [
-                                      Spacer(),
-                                      defaultButton(
-                                        text: "Register",
+                                  ConditionalBuilder(
+                                    condition: state is! RegisterLoadingState,
+                                    builder:(context)=> Row(
+                                      children: [
+                                        Spacer(),
+                                        defaultButton(
+                                          text: "Register",
 
-                                        width: 230,
-                                        //    background: Colors.blue,
-                                        radius: 5,
-                                        isUpper: true,
-                                        function: () {
-                                          if (formKey.currentState.validate()) {
-                                            print(emailcontroller.text);
-                                            print(passwordcontroller.text);
-                                            ShopLoginCubit.get(context)
-                                                .UserRegister(
-                                                    name: namecontroller.text,
-                                                    email: emailcontroller.text,
-                                                    password:
-                                                        passwordcontroller.text,
-                                                    phone:
-                                                        phonecontroller.text);
-                                          }
-                                        },
-                                      ),
-                                    ],
+                                          width: 230,
+                                          //    background: Colors.blue,
+                                          radius: 5,
+                                          isUpper: true,
+                                          function: () {
+                                            if (formKey.currentState.validate()) {
+                                              print(emailcontroller.text);
+                                              print(passwordcontroller.text);
+                                              ShopLoginCubit.get(context)
+                                                  .UserRegister(
+                                                      name: namecontroller.text,
+                                                      email: emailcontroller.text,
+                                                      password:
+                                                          passwordcontroller.text,
+                                                      phone:
+                                                          phonecontroller.text);
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    fallback: (context) =>
+                                        Center(child: CircularProgressIndicator()),
                                   ),
                                   SizedBox(
                                     height: 10,
